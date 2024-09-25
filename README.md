@@ -1,0 +1,1 @@
+The API for the NewsSnap project
