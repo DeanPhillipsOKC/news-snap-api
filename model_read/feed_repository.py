@@ -8,3 +8,6 @@ class FeedRepository(ABC):
     def get_all(self) -> List[Feed]:
         pass
 
+    @abstractmethod
+    def add(self, feed: Feed) -> Feed:
+        pass

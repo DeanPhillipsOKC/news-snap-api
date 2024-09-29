@@ -3,6 +3,6 @@ from typing import Optional
 
 
 class Feed(BaseModel):
-    id: Optional[str]
+    id: Optional[str] = None
     url: AnyHttpUrl
     description: str
