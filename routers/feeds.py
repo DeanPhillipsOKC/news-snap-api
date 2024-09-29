@@ -35,10 +35,24 @@ def delete_public_feed(
 ):
     '''
     Deletes a public feed.
-    - **id** ID of the feed to delete.
     '''
 
     if repository.delete(id):
+        return "OK"
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return "Not found"
+    
+@router.put('')
+def update_public_feed(
+    feed: Feed,
+    response: Response,
+    repository: FeedRepository = Depends(get_feed_repository)
+):
+    '''
+    Updates a public feed.
+    '''
+    if repository.update(feed):
         return "OK"
     else:
         response.status_code = status.HTTP_404_NOT_FOUND

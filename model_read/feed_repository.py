@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 from .feed import Feed
 
 class FeedRepository(ABC):
@@ -14,4 +14,8 @@ class FeedRepository(ABC):
 
     @abstractmethod
     def delete(self, id: str) -> bool:
+        pass
+
+    @abstractmethod
+    def update(self, feed: Feed) -> Optional[Feed]:
         pass

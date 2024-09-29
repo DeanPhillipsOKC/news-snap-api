@@ -1,5 +1,5 @@
 from model_read import FeedRepository, Feed
-from typing import List
+from typing import List, Optional
 from google.cloud import firestore
 from google.cloud.exceptions import NotFound
 
@@ -43,3 +43,19 @@ class FeedFirestoreRepository(FeedRepository):
             return True
         else:
             return False
+        
+    def update(self, feed: Feed) -> Optional[Feed]:
+        '''
+        Updates a feed in the database.  Returns the updated entity, or "None" if there
+        is no matching entity in the database.
+        '''
+        doc_ref = self.db.collection("feeds").document(feed.id)
+
+        if doc_ref.get().exists:
+            feed_data = feed.model_dump(exclude={'id'})
+            feed_data['url'] = str(feed_data['url'])
+            doc_ref.update(feed_data)
+            return feed
+        else:
+            return None
+
