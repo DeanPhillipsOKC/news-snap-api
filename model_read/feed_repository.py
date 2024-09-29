@@ -11,3 +11,7 @@ class FeedRepository(ABC):
     @abstractmethod
     def add(self, feed: Feed) -> Feed:
         pass
+
+    @abstractmethod
+    def delete(self, id: str) -> bool:
+        pass

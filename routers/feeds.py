@@ -1,5 +1,5 @@
 from dtos import NewFeed
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, status
 from ioc_providers import get_feed_repository
 from model_read import FeedRepository, Feed
 
@@ -26,3 +26,20 @@ def add_public_feed(feed: NewFeed, repository: FeedRepository = Depends(get_feed
     return {
         'data': repository.add(feed_to_add)
     }
+
+@router.delete('')
+def delete_public_feed(
+    id: str, 
+    response: Response,
+    repository: FeedRepository = Depends(get_feed_repository),
+):
+    '''
+    Deletes a public feed.
+    - **id** ID of the feed to delete.
+    '''
+
+    if repository.delete(id):
+        return "OK"
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return "Not found"

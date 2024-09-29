@@ -9,6 +9,7 @@ uvicorn = "*"
 pymongo = "*"
 python-dotenv = "*"
 firebase-admin = "*"
+authlib = "*"
 
 [dev-packages]
 
