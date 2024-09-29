@@ -1,11 +1,11 @@
 from dtos import NewFeed
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Response, status, Body, Path
 from ioc_providers import get_feed_repository
 from model_read import FeedRepository, Feed
 
 router = APIRouter(prefix="/feed", tags=["feed"])
 
-@router.get('')
+@router.get('', description="Returns all public feeds.")
 def get_all_public_feeds(repository: FeedRepository = Depends(get_feed_repository)):
     '''
     Gets all public feeds.
@@ -15,8 +15,11 @@ def get_all_public_feeds(repository: FeedRepository = Depends(get_feed_repositor
         'data': repository.get_all()
     }
 
-@router.post('')
-def add_public_feed(feed: NewFeed, repository: FeedRepository = Depends(get_feed_repository)):
+@router.post('', description="Creates a new public feed.")
+def add_public_feed(
+    feed: NewFeed = Body(description="The contents for the new feed"), 
+    repository: FeedRepository = Depends(get_feed_repository)
+):
     '''
     Adds a new public feed.
     '''
@@ -27,10 +30,10 @@ def add_public_feed(feed: NewFeed, repository: FeedRepository = Depends(get_feed
         'data': repository.add(feed_to_add)
     }
 
-@router.delete('')
+@router.delete('', description="Deletes a public feed.")
 def delete_public_feed(
-    id: str, 
     response: Response,
+    id: str = Path(description="The ID of the feed you would like to delete."), 
     repository: FeedRepository = Depends(get_feed_repository),
 ):
     '''
@@ -43,10 +46,10 @@ def delete_public_feed(
         response.status_code = status.HTTP_404_NOT_FOUND
         return "Not found"
     
-@router.put('')
+@router.put('', description="Updates an existing public feed.")
 def update_public_feed(
-    feed: Feed,
     response: Response,
+    feed: Feed = Body(description="The modified feed data."),
     repository: FeedRepository = Depends(get_feed_repository)
 ):
     '''
